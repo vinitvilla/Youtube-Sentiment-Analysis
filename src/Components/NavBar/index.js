@@ -2,16 +2,23 @@ import "../NavBar/index.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import store from '../../store';
+import { useSelector } from 'react-redux'
 
+export function useNavBar() {
+    return useSelector((state) => state.nav_bar)
+}
+
+export function useNavBarActive() {
+    return useSelector((state) => state.nav_bar_active)
+}
 
 function NavBar(){
+    const NAVBAR = useNavBar()
+    const NAVBAR_ACTIVE = useNavBarActive()
 
-    const NAVBAR = store.getState()['nav_bar'];
-    const NAVBAR_ACTIVE = store.getState()['nav_bar_active']
+    let RENDERING_COMPONENT = getRenderingComponenent()
 
-    let RENDERING_COMPONENT = updateRenderingComponenent()
-
-    function updateRenderingComponenent(){
+    function getRenderingComponenent(){
         return NAVBAR[NAVBAR_ACTIVE].component;
     }
 
@@ -21,7 +28,7 @@ function NavBar(){
             type: 'updateNavActive',
             payload: {index: index}
         })
-        RENDERING_COMPONENT = updateRenderingComponenent();
+        RENDERING_COMPONENT = getRenderingComponenent();
         console.log(RENDERING_COMPONENT)
     }
 
